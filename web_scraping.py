@@ -5,10 +5,12 @@ from selenium.webdriver.common.by import By # to allow search by parameters
 from selenium.webdriver.support.ui import WebDriverWait # to wait for the webpage to load
 from selenium.webdriver.support import expected_conditions as EC # determine whether the webpage has been loaded
 from selenium.common.exceptions import TimeoutException # TO handle timeout situation
+import pandas as pd
 
 #Code to open new browser window
 driver_option = webdriver.ChromeOptions()
 driver_option.add_argument(" — incognito")
+driver_option.add_argument(" --headless")
 chromedriver_path = "C:/Users/chess/PycharmProjects/WebScrapingPBL/chromedriver-win64/chromedriver-win64/chromedriver.exe"
 
 def create_webdriver():
@@ -28,3 +30,11 @@ if __name__ == "__main__":
         project_list[proj_name] = proj_url
 
     print(project_list)
+
+    browser.quit()
+
+    project_df = pd.DataFrame.from_dict(project_list, orient='index', columns=['URL'])
+    project_df['NAME'] = project_df.index
+    project_df.columns = ['URL', 'NAME']
+    project_df = project_df.reset_index(drop=True)
+    print(project_df)
